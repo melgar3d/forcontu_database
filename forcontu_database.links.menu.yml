@@ -1,0 +1,20 @@
+forcontu_database.admin_forcontu_database:
+  title: 'Forcontu Database'
+  parent: system.admin
+  route_name: forcontu_database.admin_forcontu_database
+  description: 'Página principal de Forcontu Database'
+  weight: 12
+
+forcontu_database.admin_forcontu_database_index:
+ title: 'Forcontu Database Index'
+ parent: forcontu_database.admin_forcontu_database
+ route_name: forcontu_database.admin_forcontu_database_index
+ description: 'Página principal de Forcontu Database Index'
+ weight: 14
+
+#forcontu_database.mimenu:
+#  title: 'Mi menu prueba'
+#  parent: system.admin
+#  route_name: forcontu_database.database
+#  description: 'Mi propio menu'
+#  weight: 13

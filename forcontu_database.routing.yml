@@ -1,0 +1,18 @@
+
+forcontu_database.admin_forcontu_database:
+  path: '/admin/forcontu_database'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Forcontu'
+  requirements:
+    _access: 'TRUE'
+
+forcontu_database.admin_forcontu_database_index:
+  path: '/forcontu/database/comment'
+  defaults:
+    _controller: '\Drupal\forcontu_database\Controller\ForcontuDatabaseController::comment'
+    _title: 'Forcontu database'
+  requirements:
+    _access: 'TRUE'
+
+  

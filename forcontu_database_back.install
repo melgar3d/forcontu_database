@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for File module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function forcontu_database_schema() {
+  $schema['forcontu_database_example'] = [
+    'description' => 'tabla de ejemplo',
+    'fields' => [
+        'id' => [
+            'description' => 'Campo ID',
+              'type' => 'serial',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+        ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+  ];
+
+  return $schema;
+}

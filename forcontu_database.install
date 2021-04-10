@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for File module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function forcontu_database_schema() {
+  $schema['forcontu_database_example'] = [
+      'description' => 'Tabla de ejemplo forcontu',
+      'fields' => [
+          'id' => [
+              'description' => 'Campo ID',
+              'type' => 'serial',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+          ],
+          'uid' => [
+              'description' => 'Campo uid',
+              'type' => 'int',
+              'size' => 'medium',
+              'not null' => TRUE,
+              'default' => 0,
+          ],
+          'status' => [
+              'description' => 'Estado',
+              'type' => 'int',
+              'size' => 'tiny',
+              'not null' => TRUE,
+              'default' => 0,
+          ],
+          'title' => [
+              'description' => 'Título',
+              'type' => 'varchar',
+              'length' => 255,
+              'not null' => TRUE,
+              'default' => '',
+          ],
+          'type' => [
+              'description' => 'Tipo',
+              'type' => 'varchar',
+              'length' => 64,
+              'not null' => TRUE,
+              'default' => '',
+          ],
+          'ip' => [
+              'description' => 'ip',
+              'type' => 'varchar',
+              'length' => 128,
+              'not null' => TRUE,
+              'default' => '',
+          ],
+          'timestamp' => [
+              'description' => 'Fecha en formato timestamp',
+              'type' => 'int',
+              'not null' => TRUE,
+              'unsigned' => TRUE,
+              'default' => 0, 
+          ],
+          ],
+      'primary key' => ['id',],
+        ];
+    $schema['forcontu_database_counter'] = [
+        'description' => '',
+        'fields' => [
+            'route' => [
+                'description' => '',
+                'type' => 'varchar',
+                'length' => 150,
+                'not null' => TRUE,
+            ],
+            'uid' => [
+                'description' => 'Campo UID',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+                'default' => 0,
+            ],
+            'user_count' => [
+                'description' => 'Campo user_count',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+                'default' => 0,
+            ],
+            'lastcount' => [
+                'description' => 'Campo lastcount de formato timestamp',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+                'default' => 0,
+            ],
+        ],
+        'primary key' => ['route', 'uid',],
+    ];
+    
+    return $schema;
+}
+
+function forcontu_database_install(){
+    $connection = \Drupal::database();
+    $schema = $connection->schema();
+
+    if($schema->tableExists('comment') && !$schema->fieldExists('comment', 'extra')){
+        \Drupal::messenger()->addMessage(t('La tabla comment existe. Se crea el campo extra'));
+        $field_definition = [
+            'description' => 'Campo nuevo extra',
+            'type' => 'int',
+            'not null' => TRUE,
+            'default' => 1,
+        ];
+        $schema->addField('comment', 'extra', $field_definition);
+    }else{
+        \Drupal::messenger()->addMessage(t('La tabla comment no existe'));
+    }
+
+   $result = $connection->query('SELECT cid, entity_id, subject, uid FROM (comment_field_data)');
+
+   foreach ($result as $record) {
+       dpm($record);
+   }    
+
+}
+
+function forcontu_database_uninstall(){
+    $connection = \Drupal::database();
+    $schema = $connection->schema();
+
+    if($schema->tableExists('comment') && $schema->fieldExists('comment', 'extra')){
+        \Drupal::messenger()->addMessage(t('Existe el campo extra y se elimina'));
+
+        $schema->dropField('comment', 'extra');
+    }else{
+        \Drupal::messenger()->addMessage(t('O no existe la tabla comment o no existe el campo extra'));
+    }
+
+}

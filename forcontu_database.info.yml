@@ -1,0 +1,5 @@
+name: Forcontu Database
+type: module
+description: 'Módulo pruebas bases de datos forcontu'
+package: Forcontu
+core_version_requirement: ^9
