@@ -11,6 +11,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\dblog\Controller;
 
 class ForcontuDatabaseController extends ControllerBase{
 
@@ -30,21 +31,23 @@ class ForcontuDatabaseController extends ControllerBase{
     }
 
     public function comment() {
-
         
         $query = $this->database->select('comment_field_data', 'n')
         ->fields('n', ['cid', 'entity_id', 'subject', 'uid']);
-        $query2 = $this->database->select('comment', 'f')
-        ->fields('f', ['uuid', 'extra']);
-        $query2->union($query, 'ALL');
+        //$query->rightJoin('comment', 'n');
         //dpq($query);
-        $result = $query2->execute();
-        foreach($result as $record){
-            dpm($record);
-        }
+        $result = $query->execute();
 
-        return [
-            '#markup' => '<p>' . $this->t('Respuesta al modulo de database') . '</p>',
+        $rows = $result->fetchAllAssoc('cid', \PDO::FETCH_ASSOC);
+
+        dpm($rows);
+
+        $build['forcontu_comment_table'] = [
+            '#type' => 'table',
+            //'#header' => $header,
+            '#rows' => $rows,
         ];
+
+        return $build;
     }
 }
