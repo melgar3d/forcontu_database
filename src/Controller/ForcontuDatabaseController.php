@@ -30,6 +30,10 @@ class ForcontuDatabaseController extends ControllerBase{
         );
     }
 
+    public function pageCount() {
+        
+    }
+
     public function comment() {
         
         $query = $this->database->select('comment_field_data', 'n')
